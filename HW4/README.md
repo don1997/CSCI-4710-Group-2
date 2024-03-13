@@ -25,4 +25,4 @@ Jonathan Motley
 4. Open `vampire.html` with your browser application. 
 ---
 ## Flow Chart
-![image]('Vampire Flow.png')
+![image](VampireFlow.png)
