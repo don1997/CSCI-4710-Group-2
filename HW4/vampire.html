@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Vampire App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <style> 
+    body{
+      font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+    .btn {
+      background-color: rgb(199, 0, 0); 
+      color: white; 
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>&#x1F9DB;Vampire Identification</h2>
+
+  <!-- Model Selection -->
+  <div class="form-group">
+    <label for="modelSelect">Select Model Logic:</label>
+    <select class="form-control" id="modelSelect">
+      <option value="random">Random Guess</option>
+      <option value="threshold">Threshold Based Method</option>
+    </select>
+  </div>
+
+  <!-- Classmate Data Form -->
+  <h3>Classmate Information</h3>
+  <form id="classmateForm">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" class="form-control" id="name" required>
+    </div>
+    <div class="form-group">
+      <label for="shadow">Shadow (yes/no):</label>
+      <input type="text" class="form-control" id="shadow" required>
+    </div>
+    <div class="form-group">
+      <label for="garlic">Garlic (yes/no):</label>
+      <input type="text" class="form-control" id="garlic" required>
+    </div>
+    <div class="form-group">
+      <label for="complexion">Complexion (pale/other):</label>
+      <input type="text" class="form-control" id="complexion" required>
+    </div>
+    <button type="button" class="btn btn-default" onclick="addClassmate()">Add Classmate</button>
+  </form>
+
+  <!-- Classmate Info Display -->
+  <h3>Classmate Table</h3>
+  <table class="table" id="classmateTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Shadow</th>
+        <th>Garlic</th>
+        <th>Complexion</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <!-- Process Data and visualization -->
+  <button class="btn btn-default" onclick="processData()">Process Data & Visualize</button>
+
+  <!-- Div to Hold the Pie Chart -->
+  <div id="chart_div"></div>
+</div>
+
+<script>
+  var classmateData = [];
+
+  function addClassmate() {
+    var name = document.getElementById('name').value;
+    var shadow = document.getElementById('shadow').value;
+    var garlic = document.getElementById('garlic').value;
+    var complexion = document.getElementById('complexion').value;
+
+    // Validate inputs
+    if (!name || !shadow || !garlic || !complexion) {
+      alert('Please fill out all fields.');
+      return;
+    }
+    
+
+    // Add classmate to global array
+    classmateData.push({ name, shadow, garlic, complexion });
+
+    // Update table
+    var table = document.getElementById('classmateTable').getElementsByTagName('tbody')[0];
+    var newRow = table.insertRow(table.length);
+    newRow.insertCell(0).innerHTML = name;
+    newRow.insertCell(1).innerHTML = shadow;
+    newRow.insertCell(2).innerHTML = garlic;
+    newRow.insertCell(3).innerHTML = complexion;
+
+    // Clear form
+    document.getElementById('classmateForm').reset();
+    
+  }
+
+
+function processData() {
+   // Check if there is at least one person added
+   if (classmateData.length === 0) {
+    alert('Please add at least one person before processing the data.');
+    return;
+   }
+    var model = document.getElementById('modelSelect').value;
+    
+    var numVampires = 0;
+
+    if (model === 'threshold') {
+        classmateData.forEach(function(classmate) {
+            var score = 0;
+            score += (classmate.shadow === 'no') ? 4 : 0;
+            score += (classmate.complexion === 'pale') ? 3 : 0;
+            score += (classmate.garlic === 'no') ? 3 : 0;
+
+            if (score > 6) {
+                numVampires++;
+            }
+        });
+    } else if (model === 'random') {
+        // Randomly decide
+        numVampires = classmateData.reduce((acc) => acc + (Math.random() > 0.5 ? 1 : 0), 0);
+    }
+
+    var numHumans = classmateData.length - numVampires;
+
+    drawChart(numHumans, numVampires);
+}
+  function drawChart(numHumans, numVampires) {
+    google.charts.load('current', {'packages':['corechart']});
+    
+    google.charts.setOnLoadCallback(function() {
+      
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Type');
+      data.addColumn('number', 'Count');
+      data.addRows([
+        ['Humans', numHumans],
+        ['Vampires', numVampires]
+      ]);
+
+      var options = {'title':'Class Composition', 'width':550, 'height':400};
+      var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    });
+  }
+</script>
+
+</body>
+</html>
+
