@@ -12,11 +12,12 @@ Jonathan Motley
 
 1. Clone Repo
 `$ git clone https://github.com/don1997/CSCI-4710-Group-2.git`
-2. Go inside Project
+2. Go inside Cloned Repo
+`$ cd CSCI-4710-Group-2`
+3. Go inside Project
 `$ cd HW4`
-3. Open with browser 
+4. Open with browser 
 `$ firefox vampire.html`
-
 ## Or if using visual file manager
 1. Clone Repo in terminal  
 `$ git clone https://github.com/don1997/CSCI-4710-Group-2.git`
