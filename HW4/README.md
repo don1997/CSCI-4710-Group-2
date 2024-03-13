@@ -1,3 +1,6 @@
+# Readme
+
+## Team
 ```
 Donald McLaughlin
 Kyle Gemmill
@@ -5,7 +8,7 @@ Jonathan Motley
 
 ```
 ---
-# Quick Start
+## Quick Start
 
 1. Clone Repo
 `$ git clone https://github.com/don1997/CSCI-4710-Group-2.git`
