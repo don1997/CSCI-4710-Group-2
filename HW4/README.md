@@ -23,4 +23,6 @@ Jonathan Motley
 2. Navigate to cloned repository using file manager.
 3. Go inside HW4 Folder.
 4. Open `vampire.html` with your browser application. 
-
+---
+## Flow Chart
+![image]('Vampire Flow.png')
